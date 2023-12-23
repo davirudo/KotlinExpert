@@ -1,9 +1,9 @@
 package com.example.gameingpoh
 
 import android.app.Application
-import com.example.gameingpoh.core.di.databaseModule
-import com.example.gameingpoh.core.di.networkModule
-import com.example.gameingpoh.core.di.repositoryModule
+import com.example.core.di.databaseModule
+import com.example.core.di.networkModule
+import com.example.core.di.repositoryModule
 import com.example.gameingpoh.di.useCaseModule
 import com.example.gameingpoh.di.viewModelModule
 import org.koin.android.ext.koin.androidContext

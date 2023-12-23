@@ -1,13 +1,16 @@
 package com.example.gameingpoh
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import com.example.gameingpoh.databinding.ActivityMainBinding
-import com.example.gameingpoh.favorite.FavoriteFragment
 import com.example.gameingpoh.home.HomeFragment
 import com.google.android.material.navigation.NavigationView
 
@@ -50,8 +53,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 title = getString(R.string.app_name)
             }
             R.id.nav_favorite -> {
-                fragment = FavoriteFragment()
-                title = "favorite"
+                try {
+                    val favoriteClassName = "com.example.favorite.FavoriteFragment"
+                    val fragmentClass = Class.forName(favoriteClassName, false, classLoader)
+                    fragment = fragmentClass.newInstance() as Fragment
+                } catch (e: Exception) {
+                    Log.e("DynamicFragmentLoad", "Error loading fragment", e)
+                    Toast.makeText(this, "Error loading fragment", Toast.LENGTH_SHORT).show()
+                }
             }
         }
         if (fragment != null) {

@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.core.domain.model.Game
 import com.example.gameingpoh.R
-import com.example.gameingpoh.core.domain.model.Game
 //import com.example.gameingpoh.core.ui.ViewModelFactory
 import com.example.gameingpoh.databinding.ActivityDetailGameBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,6 +19,7 @@ class DetailGameActivity : AppCompatActivity() {
 
    // private lateinit var detailTourismViewModel: DetailGameViewModel
    private val detailTourismViewModel: DetailGameViewModel by viewModel()
+
     private lateinit var binding: ActivityDetailGameBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

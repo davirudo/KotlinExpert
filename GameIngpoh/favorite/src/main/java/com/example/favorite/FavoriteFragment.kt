@@ -1,35 +1,35 @@
-package com.example.gameingpoh.home
+package com.example.favorite
 
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.core.data.Resource
 import com.example.core.ui.GameAdapter
+import com.example.favorite.databinding.FragmentFavoriteBinding
 //import com.example.gameingpoh.core.ui.ViewModelFactory
-import com.example.gameingpoh.databinding.FragmentHomeBinding
 import com.example.gameingpoh.detail.DetailGameActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.context.loadKoinModules
 
-class HomeFragment : Fragment() {
 
+class FavoriteFragment : Fragment() {
 
-//    private lateinit var homeViewModel: HomeViewModel
-private val homeViewModel: HomeViewModel by viewModel()
-
-    private var _binding: FragmentHomeBinding? = null
+//    private lateinit var favoriteViewModel: FavoriteViewModel
+private val favoriteViewModel: FavoriteViewModel by viewModel()
+    private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+    ): View? {
+        _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
+        loadKoinModules(favoriteModule)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,26 +45,14 @@ private val homeViewModel: HomeViewModel by viewModel()
             }
 
 //            val factory = ViewModelFactory.getInstance(requireActivity())
-//            homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
+//            favoriteViewModel = ViewModelProvider(this, factory)[FavoriteViewModel::class.java]
 
-            homeViewModel.game.observe(viewLifecycleOwner, { game ->
-                if (game != null) {
-                    when (game) {
-                        is com.example.core.data.Resource.Loading -> binding.progressBar.visibility = View.VISIBLE
-                        is com.example.core.data.Resource.Success -> {
-                            binding.progressBar.visibility = View.GONE
-                            tourismAdapter.setData(game.data)
-                        }
-                        is com.example.core.data.Resource.Error -> {
-                            binding.progressBar.visibility = View.GONE
-                            binding.viewError.root.visibility = View.VISIBLE
-                            binding.viewError.tvError.text = game.message ?: ("something wrong")
-                        }
-                    }
-                }
+            favoriteViewModel.favoriteGame.observe(viewLifecycleOwner, { dataGame ->
+                tourismAdapter.setData(dataGame)
+                binding.viewEmpty.root.visibility = if (dataGame.isNotEmpty()) View.GONE else View.VISIBLE
             })
 
-            with(binding.rvGames) {
+            with(binding.rvGame) {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = tourismAdapter
@@ -76,5 +64,4 @@ private val homeViewModel: HomeViewModel by viewModel()
         super.onDestroyView()
         _binding = null
     }
-
 }
